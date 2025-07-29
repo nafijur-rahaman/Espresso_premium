@@ -26,7 +26,16 @@ export const router = createBrowserRouter([
       },
       {
         path:"coffeeDetails/:id",
-        Component:CoffeeDetails 
+        Component:CoffeeDetails,
+        loader: ({params})=> fetch(`http://localhost:3000/coffees/${params.id}`) ,
+        hydrateFallbackElement: <span className="loading loading-dots loading-xl"></span>
+
+      },
+      {
+        path:"updateCoffee/:id",
+        Component:UpdateCoffee,
+        loader: ({params})=> fetch(`http://localhost:3000/coffees/${params.id}`),
+        hydrateFallbackElement: <span className="loading loading-dots loading-xl"></span>
       }
 
     ]

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 import Swal from "sweetalert2";
 
 const CoffeeCard = ({ coffee }) => {
@@ -49,13 +50,24 @@ const CoffeeCard = ({ coffee }) => {
             <span className="font-bold">Price</span>: {price}
           </p>
         </div>
+
+
         <div className="flex flex-col gap-5">
-          <button className="btn btn-square w-9">
+        
+
+        <Link to={`/coffeeDetails/${_id}`}>
+            <button className="btn btn-square w-9">
             <img src="/eye.png" alt="" />
           </button>
+        </Link>
+
+
+
+         <Link to={`/updateCoffee/${_id}`}>
           <button className="btn btn-circle w-9">
             <img src="/pen.png" alt="" />
           </button>
+         </Link>
           <button
             onClick={() => handleDelete(_id)}
             className="btn btn-circle w-9"

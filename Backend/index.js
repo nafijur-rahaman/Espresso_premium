@@ -20,61 +20,55 @@ const client = new MongoClient(uri, {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  }
+  },
 });
 async function run() {
   try {
-
     await client.connect();
 
+    const CoffeeCollection = client.db("coffeeDB").collection("coffees");
 
-    const CoffeeCollection = client.db('coffeeDB').collection('coffees');
+    //get all coffees
 
-    //get all coffees 
-
-    app.get("/coffees", async(req,res)=>{
+    app.get("/coffees", async (req, res) => {
       const data = await CoffeeCollection.find().toArray();
       res.send(data);
-    })
-
-
+    });
 
     // create a coffee object in database
-    app.post("/coffees", async(req, res) => {
-
+    app.post("/coffees", async (req, res) => {
       const newCoffee = req.body;
       const result = await CoffeeCollection.insertOne(newCoffee);
       res.send(result);
-
     });
-
 
     // Delete a coffee from database
 
+    app.delete("/coffees/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const query = { _id: new ObjectId(id) };
+      const result = await CoffeeCollection.deleteOne(query);
+      res.send(result);
+    });
 
-
-   app.delete("/coffees/:id", async(req,res)=>{
-      
-  
-    const id = req.params.id
-    console.log(id)
-    const query = {_id: new ObjectId(id)}
-    const result = await CoffeeCollection.deleteOne(query);
-    res.send(result);
-
-   })
-
-
-
+    // Get individual coffee by id
+    app.get("/coffees/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const data = await CoffeeCollection.findOne(query);
+      res.send(data);
+    });
 
     await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } catch(error){
-    console.log(error)
+    console.log(
+      "Pinged your deployment. You successfully connected to MongoDB!"
+    );
+  } catch (error) {
+    console.log(error);
   }
-  
 }
-run()
+run();
 
 app.listen(port, () => {
   console.log(`Port Listen on ${port}`);
