@@ -27,6 +27,7 @@ async function run() {
     await client.connect();
 
     const CoffeeCollection = client.db("coffeeDB").collection("coffees");
+    const UserCollection = client.db("coffeeDB").collection("users")
 
     //get all coffees
 
@@ -76,6 +77,15 @@ async function run() {
       res.send(result);
 
     })
+
+    // create user in database
+
+    app.post("/users", async(req,res)=>{
+      const userData = req.body;
+      // console.log(userData)
+      const result = await UserCollection.insertOne(userData);
+      res.send(result)
+    });
 
     await client.db("admin").command({ ping: 1 });
     console.log(
