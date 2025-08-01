@@ -35,7 +35,7 @@ const Register = () => {
         }
         e.target.reset();
       })
-      .catch((err) => {
+      .catch(() => {
         Swal.fire({
           title: "Registration Failed!",
           icon: "error",
