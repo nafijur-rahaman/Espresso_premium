@@ -6,47 +6,62 @@ import UpdateCoffee from "../Components/UpdateCoffee";
 import CoffeeDetails from "../Components/CoffeeDetails";
 import Register from "../Components/Register";
 import Login from "../Components/Login";
+import Users from "../Components/Users";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: MainLayout,
-    children:[
+    children: [
       {
-        index:true,
-        loader: ()=>fetch("http://localhost:3000/coffees"),
-        Component:Home,
-        hydrateFallbackElement: <span className="loading loading-dots loading-xl"></span>
+        index: true,
+        loader: () => fetch("http://localhost:3000/coffees"),
+        Component: Home,
+        hydrateFallbackElement: (
+          <span className="loading loading-dots loading-xl"></span>
+        ),
       },
       {
         path: "add_coffee",
-        Component: AddCoffee
+        Component: AddCoffee,
       },
       {
-        path:"updateCoffee",
-        Component:UpdateCoffee
+        path: "updateCoffee",
+        Component: UpdateCoffee,
       },
       {
-        path:"coffeeDetails/:id",
-        Component:CoffeeDetails,
-        loader: ({params})=> fetch(`http://localhost:3000/coffees/${params.id}`) ,
-        hydrateFallbackElement: <span className="loading loading-dots loading-xl"></span>
-
+        path: "coffeeDetails/:id",
+        Component: CoffeeDetails,
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/coffees/${params.id}`),
+        hydrateFallbackElement: (
+          <span className="loading loading-dots loading-xl"></span>
+        ),
       },
       {
-        path:"updateCoffee/:id",
-        Component:UpdateCoffee,
-        loader: ({params})=> fetch(`http://localhost:3000/coffees/${params.id}`),
-        hydrateFallbackElement: <span className="loading loading-dots loading-xl"></span>
+        path: "updateCoffee/:id",
+        Component: UpdateCoffee,
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/coffees/${params.id}`),
+        hydrateFallbackElement: (
+          <span className="loading loading-dots loading-xl"></span>
+        ),
       },
       {
         path: "register",
-        Component: Register
-      },{
+        Component: Register,
+      },
+      {
         path: "login",
-        Component: Login
+        Component: Login,
+      },
+      {
+        path: "users",
+        Component: Users,
+        loader: ()=> fetch("http://localhost:3000/users"),
+        hydrateFallbackElement: <span className="loading loading-dots loading-xl"></span>,
+      
       }
-
-    ]
+    ],
   },
 ]);

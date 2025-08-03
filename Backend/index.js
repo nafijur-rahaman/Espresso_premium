@@ -87,6 +87,16 @@ async function run() {
       res.send(result)
     });
 
+  
+
+    //get users from database
+
+    app.get("/users",async(req,res)=>{
+      
+      const data = await UserCollection.find().toArray();
+      res.send(data);
+    })
+
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"

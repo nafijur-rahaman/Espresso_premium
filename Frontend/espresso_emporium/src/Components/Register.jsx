@@ -7,20 +7,32 @@ const Register = () => {
   const handleRegister = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const newForm = Object.fromEntries(formData);
+    const newForm = Object.fromEntries(formData.entries());
     const { email, password, ...userProfile } = newForm;
 
-    console.log(email, password, userProfile);
     createUser(email, password)
       .then((res) => {
-        console.log(res);
+        const createdAt = new Date().toISOString();
+        const lastLogin = new Date().toISOString();
+
+        const userData = {
+          email,
+          userProfile,
+          createdAt,
+          lastLogin,
+        };
+
+
+        console.log(userData);
+
+
         if (res.user) {
           fetch("http://localhost:3000/users", {
             method: "POST",
             headers: {
               "content-type": "application/json",
             },
-            body: JSON.stringify(userProfile),
+            body: JSON.stringify(userData),
           })
             .then((res) => res.json())
             .then((data) => {
@@ -46,7 +58,7 @@ const Register = () => {
 
   return (
     <div className="w-full max-w-md mx-auto mt-20 p-8 space-y-3 rounded-xl dark:bg-gray-50 dark:text-gray-800">
-      <h1 className="text-2xl font-bold text-center">Login</h1>
+      <h1 className="text-2xl font-bold text-center">Register</h1>
       <form
         onSubmit={handleRegister}
         noValidate=""
@@ -102,6 +114,18 @@ const Register = () => {
           />
         </div>
         <div className="space-y-1 text-sm">
+          <label htmlFor="photo" className="block dark:text-gray-600">
+            Photo Url
+          </label>
+          <input
+            type="text"
+            name="photo"
+            id="photo"
+            placeholder="Enter your Photo URL"
+            className="w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+          />
+        </div>
+        <div className="space-y-1 text-sm">
           <label htmlFor="password" className="block dark:text-gray-600">
             Password
           </label>
@@ -119,7 +143,7 @@ const Register = () => {
           </div>
         </div>
         <button className="block w-full p-3 text-center rounded-sm dark:text-gray-50 dark:bg-violet-600">
-          Sign in
+          Sign up
         </button>
       </form>
       <div className="flex items-center pt-4 space-x-1">
@@ -158,16 +182,6 @@ const Register = () => {
           </svg>
         </button>
       </div>
-      <p className="text-xs text-center sm:px-6 dark:text-gray-600">
-        Don't have an account?
-        <a
-          rel="noopener noreferrer"
-          href="#"
-          className="underline dark:text-gray-800"
-        >
-          Sign up
-        </a>
-      </p>
     </div>
   );
 };
